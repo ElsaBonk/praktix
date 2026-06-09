@@ -45,7 +45,11 @@ Route::get('/dashboard', function () {
     }
 
     // 👤 USER DASHBOARD
-    $applications = Application::where('email', $user->email)
+    $applications = Application::with('program')
+        ->where(function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->orWhere('email', $user->email);
+        })
         ->latest()
         ->get();
 
@@ -85,15 +89,15 @@ Route::resource('programs', ProgramController::class)
 */
 Route::middleware('auth')->group(function () {
 
+    Route::get('/apply/success', function () {
+        return view('applications.success');
+    })->name('apply.success');
+
     Route::get('/apply/{program}', [ApplicationController::class, 'create'])
         ->name('apply.create');
 
     Route::post('/apply/{program}', [ApplicationController::class, 'store'])
         ->name('apply.store');
-
-    Route::get('/apply/success', function () {
-        return view('applications.success');
-    })->name('apply.success');
 });
 
 /*
