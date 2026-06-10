@@ -13,9 +13,9 @@
     <!-- LEFT -->
     <div class="hidden lg:flex w-1/2 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white items-center justify-center p-12">
         <div class="max-w-md">
-            <h1 class="text-5xl font-bold mb-6">Bienvenue</h1>
+            <h1 class="text-5xl font-bold mb-6">Welcome</h1>
             <p class="text-white/80">
-                Connectez-vous pour accéder à votre espace sécurisé.
+                Sign in to access your secure workspace.
             </p>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="w-full max-w-md">
 
             <h2 class="text-3xl font-bold text-white mb-6">
-                Connexion
+               Login
             </h2>
 
             <form method="POST" action="{{ route('login') }}" class="space-y-5">
@@ -44,7 +44,7 @@
 
                 <!-- Password -->
                 <div>
-                    <label class="text-gray-300 text-sm">Mot de passe</label>
+                    <label class="text-gray-300 text-sm">Password</label>
                     <input type="password" name="password" required
                            class="w-full mt-1 p-3 rounded-xl bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-indigo-500">
                     @error('password')
@@ -56,12 +56,12 @@
                 <div class="flex items-center justify-between text-sm text-gray-400">
                     <label>
                         <input type="checkbox" name="remember" class="mr-2">
-                        Se souvenir de moi
+                        Remember me
                     </label>
 
                     @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}" class="text-indigo-400">
-                            Mot de passe oublié ?
+                            Forgot password?
                         </a>
                     @endif
                 </div>
@@ -69,7 +69,7 @@
                 <!-- Button -->
                 <button type="submit"
                         class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold">
-                    Se connecter
+                    Sign in
                 </button>
 
             </form>

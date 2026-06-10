@@ -21,15 +21,14 @@ class ApplicationController extends Controller
         'full_name' => 'required|string|max:255',
         'email' => 'required|email',
         'phone' => 'required|string|max:50',
-        'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        'cv' => 'required|file|mimes:pdf,doc,docx,png,jpg,jpeg|max:2048',
     ]);
 
-    // upload CV
     $cvPath = $request->file('cv')->store('cvs', 'public');
 
     Application::create([
-        'program_id' => $program->id,   // ✅ important
-        'user_id' => Auth::id(),       // ✅ utilisateur connecté
+        'program_id' => $program->id,
+        'user_id' => auth()->id(),
         'full_name' => $request->full_name,
         'email' => $request->email,
         'phone' => $request->phone,

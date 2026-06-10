@@ -14,15 +14,15 @@
         <!-- HEADER -->
         <div class="text-center mb-6">
             <div class="w-12 h-12 mx-auto bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold">
-                BIENVENU
+                WELCOME
             </div>
 
             <h2 class="text-2xl font-bold text-gray-800 mt-3">
-                Créer un compte
+                Create an Account
             </h2>
 
             <p class="text-sm text-gray-500">
-                Inscrivez-vous pour commencer
+                Sign up to get started
             </p>
         </div>
 
@@ -32,7 +32,7 @@
 
             <!-- Name -->
             <div>
-                <label class="text-sm text-gray-600">Nom</label>
+                <label class="text-sm text-gray-600">Name</label>
                 <input type="text" name="name" value="{{ old('name') }}"
                     class="w-full mt-1 px-4 py-3 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none"
                     required>
@@ -54,7 +54,7 @@
 
             <!-- Password -->
             <div>
-                <label class="text-sm text-gray-600">Mot de passe</label>
+                <label class="text-sm text-gray-600">Password</label>
                 <input type="password" name="password"
                     class="w-full mt-1 px-4 py-3 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none"
                     required>
@@ -65,7 +65,7 @@
 
             <!-- Confirm -->
             <div>
-                <label class="text-sm text-gray-600">Confirmer mot de passe</label>
+                <label class="text-sm text-gray-600">Confirm Password</label>
                 <input type="password" name="password_confirmation"
                     class="w-full mt-1 px-4 py-3 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none"
                     required>
@@ -73,14 +73,14 @@
 
             <!-- BUTTON -->
             <button class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition">
-                S'inscrire
+                Sign Up
             </button>
 
             <!-- LOGIN LINK -->
             <p class="text-center text-sm text-gray-600 mt-4">
-                Déjà un compte ?
+                Already have an account?
                 <a href="{{ route('login') }}" class="text-indigo-600 font-semibold hover:underline">
-                    Se connecter
+                    Sign in
                 </a>
             </p>
         </form>
