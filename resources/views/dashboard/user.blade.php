@@ -1,40 +1,64 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-950 text-white">
+<body class="bg-gradient-to-br from-gray-950 via-slate-900 to-indigo-950 text-white min-h-screen">
 
 <!-- NAVBAR -->
-<header class="bg-gray-900 border-b border-gray-800">
+<header class="bg-black/40 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
 
-        <h1 class="text-xl font-bold tracking-wide">
+        <!-- LOGO -->
+        <h1 class="text-xl font-bold tracking-wide text-indigo-400">
             Praktix
         </h1>
 
-        <nav class="flex items-center gap-6 text-sm text-gray-300">
+        <!-- MENU -->
+        <nav class="flex items-center gap-8 text-sm text-gray-300">
 
-            <a href="{{ route('programs.index') }}" class="hover:text-white">
+            <a href="{{ route('dashboard') }}"
+               class="hover:text-indigo-400 transition">
+                Dashboard
+            </a>
+
+            <a href="{{ route('programs.index') }}"
+               class="hover:text-indigo-400 transition">
                 Programs
             </a>
 
-            <a href="{{ route('profile.edit') }}" class="hover:text-white">
+            <a href="#applications"
+               class="hover:text-indigo-400 transition">
+                Applications
+            </a>
+
+            <a href="{{ route('profile.edit') }}"
+               class="hover:text-indigo-400 transition">
                 Profile
             </a>
 
-            <!-- LOGOUT BUTTON -->
+        </nav>
+
+        <!-- USER + LOGOUT -->
+        <div class="flex items-center gap-3">
+
+            <span class="text-xs text-gray-400 hidden sm:block">
+                {{ auth()->user()->name }}
+            </span>
+
             <button onclick="openModal()"
-                class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm">
+                class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs shadow-lg transition">
                 Logout
             </button>
 
-        </nav>
+        </div>
+
     </div>
 </header>
 
@@ -42,36 +66,46 @@
 <main class="max-w-6xl mx-auto px-6 py-10">
 
     <!-- HEADER -->
-    <div class="mb-8">
-        <h2 class="text-3xl font-bold">Welcome {{ auth()->user()->name }}</h2>
-        <p class="text-gray-400 mt-1">Browse programs and track your applications</p>
+    <div class="mb-10">
+        <h2 class="text-4xl font-extrabold">
+            Welcome, <span class="text-indigo-400">{{ auth()->user()->name }}</span>
+        </h2>
+        <p class="text-gray-400 mt-2">
+            Track your applications and explore opportunities
+        </p>
     </div>
 
     <!-- QUICK ACTIONS -->
-    <section class="mb-10">
+    <section class="mb-12">
 
-        <h3 class="text-xl font-semibold mb-4 border-l-4 border-indigo-500 pl-3">
+        <h3 class="text-xl font-semibold mb-5 border-l-4 border-indigo-500 pl-3">
             Quick Actions
         </h3>
 
         <div class="grid md:grid-cols-2 gap-6">
 
             <a href="{{ route('programs.index') }}"
-               class="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-indigo-500 transition">
+               class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-indigo-500 hover:bg-white/10 transition">
 
-                <h4 class="text-lg font-semibold mb-2">View Programs</h4>
-                <p class="text-gray-400 text-sm">
-                    Explore available training programs and apply easily.
+                <h4 class="text-lg font-semibold group-hover:text-indigo-400">
+                    View Programs
+                </h4>
+
+                <p class="text-gray-400 text-sm mt-2">
+                    Explore training programs and apply easily.
                 </p>
 
             </a>
 
             <a href="#applications"
-               class="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-indigo-500 transition">
+               class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-purple-500 hover:bg-white/10 transition">
 
-                <h4 class="text-lg font-semibold mb-2">My Applications</h4>
-                <p class="text-gray-400 text-sm">
-                    Track the status of your submitted applications.
+                <h4 class="text-lg font-semibold group-hover:text-purple-400">
+                    My Applications
+                </h4>
+
+                <p class="text-gray-400 text-sm mt-2">
+                    Track your application progress in real time.
                 </p>
 
             </a>
@@ -80,10 +114,10 @@
 
     </section>
 
-    <!-- APPLICATIONS SECTION -->
+    <!-- APPLICATIONS -->
     <section id="applications">
 
-        <h3 class="text-xl font-semibold mb-4 border-l-4 border-indigo-500 pl-3">
+        <h3 class="text-xl font-semibold mb-6 border-l-4 border-indigo-500 pl-3">
             My Applications
         </h3>
 
@@ -91,20 +125,20 @@
 
             @forelse($applications as $app)
 
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-indigo-500 transition">
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-indigo-500 transition">
 
-                    <div class="flex justify-between items-center mb-3">
+                    <div class="flex justify-between items-center mb-4">
 
                         <h4 class="font-semibold text-lg">
                             {{ $app->program->title ?? 'Program deleted' }}
                         </h4>
 
                         <!-- STATUS -->
-                        <span class="text-xs px-3 py-1 rounded-full
-                            @if($app->status == 'Accepted') bg-green-600
-                            @elseif($app->status == 'Rejected') bg-red-600
-                            @elseif($app->status == 'Under Review') bg-blue-600
-                            @else bg-yellow-600
+                        <span class="text-xs px-3 py-1 rounded-full font-semibold
+                            @if($app->status == 'Accepted') bg-green-500/20 text-green-300
+                            @elseif($app->status == 'Rejected') bg-red-500/20 text-red-300
+                            @elseif($app->status == 'Under Review') bg-blue-500/20 text-blue-300
+                            @else bg-yellow-500/20 text-yellow-300
                             @endif
                         ">
                             {{ $app->status }}
@@ -113,15 +147,15 @@
                     </div>
 
                     <div class="text-sm text-gray-400 space-y-1">
-                        <p><span class="text-gray-300">Name:</span> {{ $app->full_name }}</p>
-                        <p><span class="text-gray-300">Email:</span> {{ $app->email }}</p>
+                        <p><span class="text-gray-200">Name:</span> {{ $app->full_name }}</p>
+                        <p><span class="text-gray-200">Email:</span> {{ $app->email }}</p>
                     </div>
 
                 </div>
 
             @empty
 
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 text-gray-400">
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 text-gray-400">
                     You have no applications yet.
                 </div>
 
@@ -135,13 +169,13 @@
 
 <!-- LOGOUT MODAL -->
 <div id="logoutModal"
-     class="hidden fixed inset-0 bg-black/60 flex items-center justify-center">
+     class="hidden fixed inset-0 bg-black/70 flex items-center justify-center">
 
-    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 w-80 text-center">
+    <div class="bg-gray-900 border border-white/10 rounded-2xl p-6 w-80 text-center">
 
         <h3 class="text-lg font-semibold mb-2">Confirm Logout</h3>
         <p class="text-gray-400 text-sm mb-5">
-            Are you sure you want to leave your session?
+            Are you sure you want to logout?
         </p>
 
         <div class="flex justify-center gap-3">
@@ -154,7 +188,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm">
-                    Yes Logout
+                    Logout
                 </button>
             </form>
 
@@ -164,13 +198,13 @@
 </div>
 
 <script>
-    function openModal(){
-        document.getElementById('logoutModal').classList.remove('hidden');
-    }
+function openModal(){
+    document.getElementById('logoutModal').classList.remove('hidden');
+}
 
-    function closeModal(){
-        document.getElementById('logoutModal').classList.add('hidden');
-    }
+function closeModal(){
+    document.getElementById('logoutModal').classList.add('hidden');
+}
 </script>
 
 </body>
