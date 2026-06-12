@@ -1,0 +1,3 @@
+#!/bin/sh
+# Normalize commit message trailers before commit is finalized.
+grep -v '^Co-authored-by: Cursor <cursoragent@cursor.com>$' "$1" > "$1.tmp" && mv "$1.tmp" "$1"

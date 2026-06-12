@@ -204,7 +204,7 @@
                 <p>{{ $programsCount }}</p>
             </div>
 
-            <div class="card purple" id="applications">
+            <div class="card purple">
                 <h3>Applications</h3>
                 <p>{{ $applicationsCount }}</p>
             </div>
@@ -263,18 +263,6 @@
     function closeModal(){
         document.getElementById('logoutModal').style.display = 'none';
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        if (window.location.hash === '#applications') {
-            window.location.replace(@json(route('admin.applications.index')));
-            return;
-        }
-
-        const target = document.querySelector(window.location.hash);
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    });
 </script>
 
 </body>

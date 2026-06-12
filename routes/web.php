@@ -41,11 +41,7 @@ Route::get('/dashboard', function () {
         ));
     }
 
-    $applications = Application::with('program')
-        ->where(function ($query) use ($user) {
-            $query->where('user_id', $user->id)
-                ->orWhere('email', $user->email);
-        })
+    $applications = Application::where('user_id', $user->id)
         ->latest()
         ->get();
 
