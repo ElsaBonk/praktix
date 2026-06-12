@@ -15,6 +15,21 @@ class ApplicationController extends Controller
         return view('applications.create', compact('program'));
     }
 
+    public function index()
+    {
+        $user = auth()->user();
+
+        $applications = Application::with('program')
+            ->where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhere('email', $user->email);
+            })
+            ->latest()
+            ->get();
+
+        return view('applications.index', compact('applications'));
+    }
+
     public function store(Request $request, Program $program)
 {
     $request->validate([

@@ -1,12 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Admin\ApplicationAdminController;
-
 use App\Models\Program;
 use App\Models\Application;
 
@@ -21,15 +19,14 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| DASHBOARD (ADMIN / USER SPLIT)
+| DASHBOARD
 |--------------------------------------------------------------------------
 */
 Route::get('/dashboard', function () {
 
     $user = auth()->user();
 
-    // 👑 ADMIN DASHBOARD
-    if ($user && $user->role === 'admin') {
+    if ($user->role === 'admin') {
 
         $programsCount = Program::count();
         $applicationsCount = Application::count();
@@ -44,7 +41,6 @@ Route::get('/dashboard', function () {
         ));
     }
 
-    // 👤 USER DASHBOARD
     $applications = Application::with('program')
         ->where(function ($query) use ($user) {
             $query->where('user_id', $user->id)
@@ -59,7 +55,7 @@ Route::get('/dashboard', function () {
 
 /*
 |--------------------------------------------------------------------------
-| PROFILE (USER)
+| PROFILE
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -76,15 +72,41 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| PROGRAMS (CRUD)
+| PROGRAMS PUBLIC
 |--------------------------------------------------------------------------
 */
-Route::resource('programs', ProgramController::class)
-    ->middleware('auth');
+Route::get('/programs', [ProgramController::class, 'index'])
+    ->name('programs.index');
+
+Route::get('/programs/{program}', [ProgramController::class, 'show'])
+    ->name('programs.show');
 
 /*
 |--------------------------------------------------------------------------
-| APPLY SYSTEM (USER ONLY)
+| PROGRAMS ADMIN
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'admin'])->group(function () {
+
+    Route::get('/programs/create', [ProgramController::class, 'create'])
+        ->name('programs.create');
+
+    Route::post('/programs', [ProgramController::class, 'store'])
+        ->name('programs.store');
+
+    Route::get('/programs/{program}/edit', [ProgramController::class, 'edit'])
+        ->name('programs.edit');
+
+    Route::put('/programs/{program}', [ProgramController::class, 'update'])
+        ->name('programs.update');
+
+    Route::delete('/programs/{program}', [ProgramController::class, 'destroy'])
+        ->name('programs.destroy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| APPLY SYSTEM
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -92,6 +114,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/apply/success', function () {
         return view('applications.success');
     })->name('apply.success');
+
+    Route::get('/applications', [ApplicationController::class, 'index'])
+        ->name('applications.index');
 
     Route::get('/apply/{program}', [ApplicationController::class, 'create'])
         ->name('apply.create');
@@ -102,21 +127,23 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN ONLY ROUTES 🔐
+| ADMIN APPLICATIONS
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->group(function () {
 
-    Route::get('/applications', [ApplicationAdminController::class, 'index'])
-        ->name('admin.applications.index');
+        Route::get('/applications', [ApplicationAdminController::class, 'index'])
+            ->name('admin.applications.index');
 
-    Route::patch('/applications/{application}', [ApplicationAdminController::class, 'updateStatus'])
-        ->name('admin.applications.update');
-});
+        Route::patch('/applications/{application}', [ApplicationAdminController::class, 'updateStatus'])
+            ->name('admin.applications.update');
+    });
 
 /*
 |--------------------------------------------------------------------------
-| AUTH ROUTES
+| AUTH
 |--------------------------------------------------------------------------
 */
 require __DIR__.'/auth.php';
