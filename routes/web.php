@@ -107,21 +107,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
 */
 Route::middleware('auth')->group(function () {
 
+    Route::get('/apply/success', function () {
+        return view('applications.success');
+    })->name('apply.success');
+
+    Route::get('/applications', [ApplicationController::class, 'index'])
+        ->name('applications.index');
+
     Route::get('/apply/{program}', [ApplicationController::class, 'create'])
         ->name('apply.create');
 
     Route::post('/apply/{program}', [ApplicationController::class, 'store'])
         ->name('apply.store');
 });
-
-/*
-|--------------------------------------------------------------------------
-| SUCCESS PAGE
-|--------------------------------------------------------------------------
-*/
-Route::get('/apply/success', function () {
-    return view('applications.success');
-})->name('apply.success');
 
 /*
 |--------------------------------------------------------------------------
